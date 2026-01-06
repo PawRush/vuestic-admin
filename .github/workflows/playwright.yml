@@ -64,17 +64,17 @@ jobs:
             ${{ runner.os }}-pw-
 
       - name: Install Playwright Browsers
-        run: yarn workspace e2e exec playwright install --with-deps
+        run: yarn exec playwright install --with-deps
 
       - name: Generate baseline snapshots
-        run: yarn e2e --update-snapshots
+        run: yarn test:e2e --update-snapshots
         env:
-          E2E_BASE_URL: ${{ inputs.baseline_url }}
+          BASE_URL: ${{ inputs.baseline_url }}
 
       - name: Run Playwright tests (against Netlify build)
-        run: yarn e2e
+        run: yarn test:e2e
         env:
-          E2E_BASE_URL: ${{ inputs.target_url }}
+          BASE_URL: ${{ inputs.target_url }}
         continue-on-error: true #! Temporary: ignore screenshot diffs in CI to avoid blocking PRs.
                                 # TODO: remove once visual tests are stabilized.
 
@@ -82,13 +82,13 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: playwright-report-${{ github.sha }}
-          path: e2e/playwright-report/**
+          path: playwright-report/**
 
       - name: Publish Playwright report to Netlify
         if: ${{ always() && inputs.publish_report == true }}
         uses: nwtgck/actions-netlify@v3.0
         with:
-          publish-dir: 'e2e/playwright-report'
+          publish-dir: 'playwright-report'
           production-deploy: false
           alias: run-${{ github.run_id }}
           deploy-message: "Playwright report for ${{ github.sha }} (target: ${{ inputs.target_url }})"

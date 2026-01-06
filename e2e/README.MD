@@ -1,7 +1,7 @@
 # End-to-End Testing with Playwright
 
 This project uses **Playwright** for end-to-end (E2E) testing.
-All test logic lives in the `e2e` folder, but several root-level changes are required for correct setup.
+Test files live in the `e2e/tests` folder, with configuration at the project root.
 
 ---
 
@@ -19,26 +19,20 @@ You can provide:
 
 The workflow runs tests and uploads the Playwright HTML report as a GitHub Artifact, which can be downloaded and inspected locally.
 
-### 2. `package.json` changes
+### 2. Available Scripts
 
-At the root level, add:
-
-```json
-{
-  "workspaces": ["e2e"],
-  "scripts": {
-    "e2e": "yarn workspace e2e test"
-  }
-}
+```bash
+yarn test:e2e           # Run all tests
+yarn test:e2e:ui        # Run tests with Playwright UI
+yarn test:e2e:headed    # Run tests in headed browser mode
+yarn test:e2e:report    # Show the HTML report
 ```
-
-This ensures the E2E project is recognized as a Yarn workspace and provides a shortcut script for running tests.
 
 ---
 
 ## Configuration
 
-All configuration is stored in: `e2e/playwright.config.ts`
+All configuration is stored in: `playwright.config.ts` (project root)
 
 Here you can customize:
 
@@ -68,10 +62,9 @@ These allow you to intercept, control, and replace backend requests with mocks d
 ## Local Usage
 
 Step 1:
-// Expect error
-Generate baseline screenshots: `E2E_BASE_URL=https://admin-demo.vuestic.dev yarn e2e:update-snapshots`
+Generate baseline screenshots: `BASE_URL=https://admin-demo.vuestic.dev yarn test:e2e --update-snapshots`
 
 Step 2:
 Build and run project locally: `yarn build:ci && yarn start:ci`
 // Use correct API base url in .env
-To run tests locally: `yarn e2e`
+To run tests locally: `yarn test:e2e`
