@@ -29,7 +29,7 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    }
+    },
   ],
 
   snapshotPathTemplate: 'e2e/__screenshots__/{projectName}/{testFilePath}/{testName}{ext}',
@@ -42,9 +42,11 @@ export default defineConfig({
   },
 
   /* Run local dev server before starting the tests */
-  webServer: process.env.BASE_URL ? undefined : {
-    command: 'yarn dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: process.env.BASE_URL
+    ? undefined
+    : {
+        command: 'yarn dev',
+        url: 'http://localhost:5173',
+        reuseExistingServer: !process.env.CI,
+      },
 })
