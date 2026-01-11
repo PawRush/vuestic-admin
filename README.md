@@ -37,6 +37,12 @@ npm create vuestic@latest
 
 After [Vuestic Admin](https://admin.vuestic.dev) is installed, run `npm install` to install dependcies, then run `npm run dev` to start local development server.
 
+### Deployment
+
+This project is deployed to AWS S3 + CloudFront. See [DEPLOYMENT.md](./DEPLOYMENT.md) for deployment instructions and details.
+
+Deploy command: `./scripts/deploy.sh`
+
 ### Documentation
 
 Documentation, guides, examples and tutorials are available on [ui.vuestic.dev](https://ui.vuestic.dev)
