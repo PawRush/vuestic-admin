@@ -50,12 +50,12 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 
 ## Deployment Info
 
-- Deployment URL: https://d1nt8v6cswjly0.cloudfront.net
-- Stack name: VuesticFrontend-preview-sergeyka
-- Distribution ID: E14A4O69V3XB3S
-- S3 Bucket: vuesticfrontend-preview-ser-cftos3s3bucketcae9f2be-ahulpcyooyme
-- S3 Log Bucket: vuesticfrontend-preview-s-cftos3s3loggingbucket64b-4sdexight6qm
-- CloudFront Log Bucket: vuesticfrontend-preview-s-cftos3cloudfrontloggingb-d8nhj3ow10kc
+- Preview URL: https://d1nt8v6cswjly0.cloudfront.net
+- Preview Stack: VuesticFrontend-preview-sergeyka
+- Pipeline: VuesticPipeline
+- Pipeline Console: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VuesticPipeline/view
+- CodeConnection ARN: arn:aws:codeconnections:us-east-1:625164594347:connection/62624374-ce4b-46da-b875-7b236bc99adc
+- Production Stack: VuesticFrontend-prod (deployed via pipeline)
 
 ## Recovery Guide
 

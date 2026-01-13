@@ -29,9 +29,11 @@
 
 ### Deployment
 
-Deployed at: https://d1nt8v6cswjly0.cloudfront.net
+Preview: https://d1nt8v6cswjly0.cloudfront.net
 
-Deployment command: `./scripts/deploy.sh`
+Pipeline: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VuesticPipeline/view
+
+Deploy: `git push origin sergeyka-deploy-to-aws`
 
 See [DEPLOYMENT_PLAN.md](./DEPLOYMENT_PLAN.md) for full details.
 
