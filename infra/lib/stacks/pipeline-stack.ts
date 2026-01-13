@@ -31,7 +31,7 @@ export class PipelineStack extends cdk.Stack {
       commands: [
         "yarn install",
         "(cd infra && npm install)",
-        "yarn run lint --if-present",
+        "yarn run lint",
         "npx -y @secretlint/quick-start '**/*'",
         "yarn run build",
         "cd infra",
