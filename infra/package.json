@@ -13,7 +13,9 @@
     "deploy:preview": "cdk deploy --all --require-approval never --progress events",
     "destroy": "cdk destroy --all",
     "synth": "cdk synth",
-    "diff": "cdk diff"
+    "diff": "cdk diff",
+    "deploy:pipeline": "cdk deploy VuesticPipelineStack --context codeConnectionArn=arn:aws:codeconnections:us-east-1:625164594347:connection/62624374-ce4b-46da-b875-7b236bc99adc --context repositoryName=PawRush/vuestic-admin --context branchName=sergeyka-deploy-to-aws --require-approval never --progress events",
+    "destroy:pipeline": "cdk destroy VuesticPipelineStack --context codeConnectionArn=arn:aws:codeconnections:us-east-1:625164594347:connection/62624374-ce4b-46da-b875-7b236bc99adc"
   },
   "devDependencies": {
     "@types/jest": "^30",
