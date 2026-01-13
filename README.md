@@ -27,6 +27,14 @@
   </a>
 </p>
 
+### Deployment
+
+Deployed at: https://d1nt8v6cswjly0.cloudfront.net
+
+Deployment command: `./scripts/deploy.sh`
+
+See [DEPLOYMENT_PLAN.md](./DEPLOYMENT_PLAN.md) for full details.
+
 ### Quick start
 
 Use following command to quickly scaffold new [Vuestic Admin](https://admin-demo.vuestic.dev) or empty Vite or Nuxt project with [Vuestic UI](https://ui.vuestic.dev).
