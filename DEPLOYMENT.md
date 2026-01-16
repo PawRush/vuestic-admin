@@ -1,10 +1,13 @@
 # Deployment Summary
 
-Your app is deployed to AWS with a 'preview' URL that doesn't change when you update GitHub. Share this link with others.
+Your app is deployed to AWS with automated CI/CD through CodePipeline. Changes pushed to the `deploy-to-aws` branch automatically trigger deployment to production.
 
-To connect deployments to GitHub changes, ask your coding agent to `setup a AWS CodePipeline`.
+**Preview Environment:** https://d2cmubc3kznf5o.cloudfront.net (manual deployment)
+**Production Environment:** Will be available after first pipeline run completes
 
-Services used: CloudFront, S3, CloudFormation, IAM
+**Pipeline Console:** https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VuesticPipeline/view
+
+Services used: CodePipeline, CodeBuild, CodeConnections, CloudFront, S3, CloudFormation, IAM
 
 Questions? Ask your Coding Agent:
 
@@ -14,16 +17,22 @@ Questions? Ask your Coding Agent:
 ## Quick Commands
 
 ```bash
-# View deployment status
-aws cloudformation describe-stacks --stack-name "VuesticFrontend-preview-sergeyka" --query 'Stacks[0].StackStatus' --output text --no-cli-pager
+# Deploy to production (automatic via pipeline)
+git push origin deploy-to-aws
 
-# Invalidate CloudFront cache
-aws cloudfront create-invalidation --distribution-id "E3DVJ5UWD0AQZV" --paths "/*" --no-cli-pager
+# View pipeline status
+aws codepipeline get-pipeline-state --name "VuesticPipeline" --query 'stageStates[*].[stageName,latestExecution.status]' --output table --no-cli-pager
 
-# View CloudFront access logs (last hour)
-aws s3 ls "s3://vuesticfrontend-preview-s-cftos3cloudfrontloggingb-n8esdnwtmq8n/" --recursive | tail -20
+# View build logs
+aws logs tail "/aws/codebuild/PipelineBuildSynthCdkBuildP-8cpPUTiXlsea" --follow --no-cli-pager
 
-# Redeploy
+# Trigger pipeline manually
+aws codepipeline start-pipeline-execution --name "VuesticPipeline" --no-cli-pager
+
+# View production deployment status
+aws cloudformation describe-stacks --stack-name "VuesticFrontend-prod" --query 'Stacks[0].StackStatus' --output text --no-cli-pager
+
+# Deploy preview environment manually
 ./scripts/deploy.sh
 ```
 
