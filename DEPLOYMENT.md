@@ -1,22 +1,21 @@
 ---
-sop_name: deploy-frontend-app
+sop_name: setup-pipeline
 repo_name: vuestic-admin
 app_name: VuesticAdmin
-app_type: Frontend Application
+app_type: CI/CD Pipeline
 branch: deploy-to-aws
 created: 2026-01-21T20:23:00Z
-completed: 2026-01-21T20:40:46Z
+pipeline_created: 2026-01-21T20:50:19Z
 ---
 
 # Deployment Summary
 
-Your app is deployed to AWS! Preview URL: https://dnzmzuown47yd.cloudfront.net
+Your app now has automated CI/CD! Every push to the `deploy-to-aws` branch will automatically deploy to production.
 
-**Next Step: Automate Deployments**
+**Production URL**: Will be available once the pipeline completes its first deployment (Deploy stage in progress)
+**Pipeline URL**: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VuesticAdminPipeline/view
 
-You're currently using manual deployment. To automate deployments from GitHub, ask your coding agent to set up AWS CodePipeline using an agent SOP for pipeline creation. Try: "create a pipeline using AWS SOPs"
-
-Services used: CloudFront, S3, CloudFormation, IAM
+Services used: CodePipeline, CodeBuild, CodeConnections, CloudFront, S3, CloudFormation, IAM
 
 Questions? Ask your Coding Agent:
 - What resources were deployed to AWS?
@@ -25,91 +24,100 @@ Questions? Ask your Coding Agent:
 ## Quick Commands
 
 ```bash
-# View deployment status
-aws cloudformation describe-stacks --stack-name "VuesticFrontend-preview-sergeyka" --query 'Stacks[0].StackStatus' --output text
+# View pipeline status
+aws codepipeline get-pipeline-state --name "VuesticAdminPipeline" --query 'stageStates[*].[stageName,latestExecution.status]' --output table
 
-# Invalidate CloudFront cache
-aws cloudfront create-invalidation --distribution-id "E2826FACW9IYVL" --paths "/*"
+# Trigger pipeline manually
+aws codepipeline start-pipeline-execution --name "VuesticAdminPipeline"
 
-# View CloudFront access logs (last hour)
-aws s3 ls "s3://vuesticfrontend-preview-s-cftos3cloudfrontloggingb-ev6mwxqjqvyt/" --recursive | tail -20
+# View production stack status
+aws cloudformation describe-stacks --stack-name "VuesticAdminFrontend-prod" --query 'Stacks[0].StackStatus' --output text
 
-# Redeploy
-./scripts/deploy.sh
+# Get production URL (once deployed)
+aws cloudformation describe-stacks --stack-name "VuesticAdminFrontend-prod" --query 'Stacks[0].Outputs[?OutputKey==`WebsiteURL`].OutputValue' --output text
+
+# Deploy to production
+git push origin deploy-to-aws
 ```
 
 ## Production Readiness
 
 For production deployments, consider:
 - WAF Protection: Add AWS WAF with managed rules (Core Rule Set, Known Bad Inputs) and rate limiting
-- CSP Headers: Configure Content Security Policy in CloudFront response headers (`script-src 'self'`, `frame-ancestors 'none'`)
+- CSP Headers: Already configured via CloudFront Function
 - Custom Domain: Set up Route 53 and ACM certificate
 - Monitoring: CloudWatch alarms for 4xx/5xx errors and CloudFront metrics
-- Auth Redirect URLs: If using an auth provider (Auth0, Supabase, Firebase, Lovable, etc.), add your CloudFront URL to allowed redirect URLs
+- Auth Redirect URLs: If using an auth provider (Auth0, Supabase, Firebase, etc.), add your CloudFront URL to allowed redirect URLs
 
 ---
 
-# Deployment Plan: Vuestic Admin
+# Pipeline Deployment Plan
 
 ## Phase 1: Gather Context and Configure
 
 - [x] Step 0: Inform User of Execution Flow
 - [x] Step 1: Create Deployment Plan
-- [x] Step 2: Create Deploy Branch
-- [x] Step 3: Detect Build Configuration
-- [x] Step 4: Validate Prerequisites
-- [x] Step 5: Revisit Deployment Plan
+- [x] Step 2: Detect Existing Infrastructure
+  - [x] 2.1: Detect stacks and frontend
+  - [x] 2.2: Detect app name and git repository
+  - [x] 2.3: Determine quality checks
+  - [x] 2.4: User confirmation
+  - [x] 2.5: Use existing CodeConnection
 
-## Build Configuration Detected
+## Infrastructure Detected
 
-- Framework: Vite + Vue 3 (SPA)
-- Package Manager: yarn@4.9.2
-- Build Command: `yarn run build`
-- Output Directory: `dist/`
-- Base Path: `/` (root)
-- CloudFront Config: SPA with error responses
-- Lint Command: `yarn run lint`
+- Stack: FrontendStack (VuesticFrontend-{environment})
+- Framework: Vite + Vue 3
+- Build Output: dist/
+- Package Manager: yarn (root), npm (infra)
+- Quality Checks: lint (enabled)
 
-## Phase 2: Build CDK Infrastructure
+## Phase 2: Build and Deploy Pipeline
 
-- [x] Step 6: Initialize CDK Foundation
-- [x] Step 7: Generate CDK Stack
-- [x] Step 8: Create Deployment Script
-- [x] Step 9: Validate CDK Synth
+- [x] Step 3: Create CDK Pipeline Stack
+- [x] Step 4: CDK Bootstrap
+- [x] Step 5: Deploy Pipeline
+  - [x] 5.1: Push to remote
+  - [x] 5.2: Authorize CodeConnection
+  - [x] 5.3: Deploy pipeline stack
+  - [x] 5.4: Trigger pipeline
+- [x] Step 6: Monitor Pipeline
 
-## Phase 3: Deploy and Validate
+## Phase 3: Documentation
 
-- [x] Step 10: Execute CDK Deployment
-- [x] Step 11: Validate CloudFormation Stack
+- [x] Step 7: Finalize Deployment Plan
+- [x] Step 8: Update README.md
 
-## Phase 4: Update Documentation
+## Pipeline Info
 
-- [x] Step 12: Finalize Deployment Plan
-- [x] Step 13: Update README.md
+- Pipeline Name: VuesticAdminPipeline
+- Pipeline ARN: arn:aws:codepipeline:us-east-1:126593893432:VuesticAdminPipeline
+- CodeConnection ARN: arn:aws:codeconnections:us-east-1:126593893432:connection/c140aa0c-7407-42c9-aa4b-7c81f5faf40b
+- CodeConnection Name: PawRush-all
+- Repository: PawRush/vuestic-admin
+- Branch: deploy-to-aws
+- Stack name: VuesticAdminPipelineStack
+- Quality Checks: lint (enabled), secretlint
 
-## Deployment Info
+## Pipeline Stages
 
-- Deployment URL: https://dnzmzuown47yd.cloudfront.net
-- Stack name: VuesticFrontend-preview-sergeyka
-- Distribution ID: E2826FACW9IYVL
-- S3 Bucket: vuesticfrontend-preview-ser-cftos3s3bucketcae9f2be-eghoiawddr9q
-- S3 Log Bucket: vuesticfrontend-preview-s-cftos3s3loggingbucket64b-buvjxhfjfs6l
-- CloudFront Log Bucket: vuesticfrontend-preview-s-cftos3cloudfrontloggingb-ev6mwxqjqvyt
-- Stack Status: CREATE_COMPLETE
-- CloudFront Status: Deployed
-- Deployment Timestamp: 2026-01-21T20:40:46Z
+1. **Source**: Pull code from GitHub (deploy-to-aws branch)
+2. **Build**: Install dependencies, run lint, run secretlint, build frontend, synthesize CDK
+3. **UpdatePipeline**: Self-mutate if pipeline changed
+4. **Assets**: Publish build assets to S3
+5. **Deploy**: Deploy VuesticAdminFrontend-prod stack
 
 ## Recovery Guide
 
 ```bash
-# Rollback
-cd infra && cdk destroy "VuesticFrontend-preview-sergeyka"
+# Destroy pipeline
+cd infra && npm run destroy:pipeline
 
-# Redeploy
-./scripts/deploy.sh
+# Redeploy pipeline
+cd infra && npm run deploy:pipeline
 
-# Manual invalidation if needed
-aws cloudfront create-invalidation --distribution-id "E2826FACW9IYVL" --paths "/*"
+# Manual pipeline trigger
+aws codepipeline start-pipeline-execution --name "VuesticAdminPipeline"
 ```
 
 ## Issues Encountered
@@ -118,8 +126,8 @@ None.
 
 ## Session Log
 
-### Session 1 - 2026-01-21T20:23:00Z
+### Session 1 - 2026-01-21T20:45:00Z
 
 Agent: Claude Sonnet 4.5
-Progress: Completed all phases - gathered context, built CDK infrastructure, deployed to AWS, validated deployment
-Status: Deployment complete
+Progress: Created pipeline, deployed to AWS, triggered first deployment
+Status: Pipeline deployed and running successfully

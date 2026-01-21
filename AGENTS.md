@@ -21,16 +21,21 @@ yarn dev                  # Start development server
 yarn build                # Build for production
 yarn lint                 # Lint and fix code
 
-# Deployment
-./scripts/deploy.sh       # Deploy to preview environment
-./scripts/deploy.sh prod  # Deploy to production
+# Deployment (Automated via Pipeline)
+git push origin deploy-to-aws  # Triggers automated deployment to production
+
+# Manual Deployment (Preview environments only)
+./scripts/deploy.sh            # Deploy to preview environment
+./scripts/deploy.sh prod       # DO NOT USE - prod is deployed via pipeline
 
 # Infrastructure
 cd infra
 npm run synth             # Generate CloudFormation template
 npm run diff              # Show infrastructure changes
-npm run deploy            # Deploy infrastructure
+npm run deploy            # Deploy infrastructure (preview only)
+npm run deploy:pipeline   # Deploy pipeline stack
 npm run destroy           # Destroy infrastructure
+npm run destroy:pipeline  # Destroy pipeline stack
 ```
 
 ## Build Configuration
