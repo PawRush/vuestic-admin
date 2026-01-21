@@ -19,8 +19,8 @@ yarn run build
 
 echo "Installing CDK dependencies..."
 cd infra
-yarn install
-yarn run build
+npm install
+npm run build
 
 echo "Bootstrapping CDK..."
 npx cdk bootstrap --progress events
