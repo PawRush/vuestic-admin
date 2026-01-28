@@ -16,13 +16,16 @@ last_updated: 2026-01-28T17:06:30Z
 
 # Deployment Summary
 
-Your app is deployed to AWS! Preview URL: https://d2syfjtj6a9exo.cloudfront.net
+Your app is deployed to AWS with automated CI/CD!
 
-**Next Step: Automate Deployments**
+**Manual Preview**: https://d2syfjtj6a9exo.cloudfront.net (preview-sergeyka environment)
 
-You're currently using manual deployment. To automate deployments from GitHub, ask your coding agent to set up AWS CodePipeline using an agent SOP for pipeline creation. Try: "create a pipeline using AWS SOPs"
+**Automated Pipeline**: Production deployments now automated via AWS CodePipeline
+- Push to `deploy-to-aws-20260128_174824-sergeyka` branch → automatic deployment
+- Pipeline URL: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VuesticAdminPipeline/view
+- Production URL: Available after pipeline completes first deployment
 
-Services used: CloudFront, S3, CloudFormation, IAM
+Services used: CodePipeline, CodeBuild, CloudFront, S3, CloudFormation, IAM, CodeConnections
 
 Questions? Ask your Coding Agent:
  - What resources were deployed to AWS?
@@ -31,16 +34,22 @@ Questions? Ask your Coding Agent:
 ## Quick Commands
 
 ```bash
-# View deployment status
+# View pipeline status
+aws codepipeline get-pipeline-state --name "VuesticAdminPipeline" --query 'stageStates[*].[stageName,latestExecution.status]' --output table
+
+# Trigger pipeline manually
+aws codepipeline start-pipeline-execution --name "VuesticAdminPipeline"
+
+# View build logs
+aws logs tail "/aws/codebuild/PipelineBuildSynthCdkBuildP-AazUgml25ibS" --follow
+
+# View production deployment status
+aws cloudformation describe-stacks --stack-name "VuesticFrontend-prod" --query 'Stacks[0].StackStatus' --output text
+
+# View preview deployment status (manual)
 aws cloudformation describe-stacks --stack-name "VuesticFrontend-preview-sergeyka" --query 'Stacks[0].StackStatus' --output text
 
-# Invalidate CloudFront cache
-aws cloudfront create-invalidation --distribution-id "E3SJGIKG21WJGF" --paths "/*"
-
-# View CloudFront access logs (last hour)
-aws s3 ls "s3://vuesticfrontend-preview-s-cftos3cloudfrontloggingb-xofimyrs438k/" --recursive | tail -20
-
-# Redeploy
+# Manual deployment (preview environment)
 ./scripts/deploy.sh
 ```
 
@@ -89,6 +98,17 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 
 ## Deployment Info
 
+### Pipeline (Automated)
+- Pipeline name: VuesticAdminPipeline
+- Pipeline ARN: arn:aws:codepipeline:us-east-1:126593893432:VuesticAdminPipeline
+- Pipeline URL: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VuesticAdminPipeline/view
+- Source branch: deploy-to-aws-20260128_174824-sergeyka
+- Repository: PawRush/vuestic-admin
+- CodeConnection: arn:aws:codeconnections:us-east-1:126593893432:connection/c140aa0c-7407-42c9-aa4b-7c81f5faf40b
+- Production stack: VuesticFrontend-prod
+- Quality checks: lint (format + eslint), secret scanning
+
+### Manual Preview (preview-sergeyka)
 - Deployment URL: https://d2syfjtj6a9exo.cloudfront.net
 - Stack name: VuesticFrontend-preview-sergeyka
 - Distribution ID: E3SJGIKG21WJGF

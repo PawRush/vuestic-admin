@@ -39,11 +39,17 @@ After [Vuestic Admin](https://admin.vuestic.dev) is installed, run `npm install`
 
 ### Deployment
 
-Deployed at: https://d2syfjtj6a9exo.cloudfront.net, using the [deploy-frontend-app] Agent Standard Operation Procedure from the [AWS MCP](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html).
+**Automated Pipeline**: CI/CD pipeline configured with AWS CodePipeline. Push to `deploy-to-aws-20260128_174824-sergeyka` branch to trigger automatic deployment.
 
-Deployment command: `./scripts/deploy.sh`
+Pipeline: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VuesticAdminPipeline/view
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for full details.
+Deploy: `git push origin deploy-to-aws-20260128_174824-sergeyka`
+
+**Manual Preview**: https://d2syfjtj6a9exo.cloudfront.net
+
+Manual deployment command: `./scripts/deploy.sh`
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for full details. Created with the [setup-pipeline] Agent Standard Operation Procedure from the [AWS MCP](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html).
 
 ### Documentation
 
