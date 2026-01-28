@@ -47,9 +47,12 @@ Ask questions at the official community [discord server](https://discord.gg/jTKT
 
 ### Deployment
 
-Deployed at: https://d2ezmfw9ocabo2.cloudfront.net, using the [deploy-frontend-app] Agent Standard Operation Procedure from the [AWS MCP](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html).
+**Preview**: https://d2ezmfw9ocabo2.cloudfront.net
+**Pipeline**: [VuesticPipeline](https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VuesticPipeline/view)
 
-Deployment command: `./scripts/deploy.sh`
+Deploy to production: `git push origin deploy-to-aws-20260128_161953-sergeyka`
+
+Created with [deploy-frontend-app] and [setup-pipeline] SOPs from the [AWS MCP](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html).
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for full details.
 

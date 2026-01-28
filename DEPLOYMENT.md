@@ -10,13 +10,14 @@ last_updated: 2026-01-28T16:40:00Z
 
 # Deployment Summary
 
-Your app is deployed to AWS! Preview URL: https://d2ezmfw9ocabo2.cloudfront.net
+Your app is deployed to AWS with automated CI/CD!
 
-**Next Step: Automate Deployments**
+**Preview Environment**: https://d2ezmfw9ocabo2.cloudfront.net
+**Production Pipeline**: VuesticPipeline
 
-You're currently using manual deployment. To automate deployments from GitHub, ask your coding agent to set up AWS CodePipeline using an agent SOP for pipeline creation. Try: "create a pipeline using AWS SOPs"
+The pipeline automatically deploys to production when you push to the `deploy-to-aws-20260128_161953-sergeyka` branch.
 
-Services used: CloudFront, S3, CloudFormation, IAM
+Services used: CodePipeline, CodeBuild, CloudFront, S3, CloudFormation, IAM
 
 Questions? Ask your Coding Agent:
  - What resources were deployed to AWS?
@@ -25,16 +26,19 @@ Questions? Ask your Coding Agent:
 ## Quick Commands
 
 ```bash
-# View deployment status
-aws cloudformation describe-stacks --stack-name "VuesticFrontend-preview-sergeyka" --query 'Stacks[0].StackStatus' --output text
+# View pipeline status
+aws codepipeline get-pipeline-state --name "VuesticPipeline" --query 'stageStates[*].[stageName,latestExecution.status]' --output table
 
-# Invalidate CloudFront cache
-aws cloudfront create-invalidation --distribution-id "E1R8J9QLOEQAQN" --paths "/*"
+# View build logs
+aws logs tail "/aws/codebuild/VuesticPipelineStack-Synth" --follow
 
-# View CloudFront access logs (last hour)
-aws s3 ls "s3://vuesticfrontend-preview-s-cftos3cloudfrontloggingb-ujmlrrprn0xy/" --recursive | tail -20
+# Trigger pipeline manually
+aws codepipeline start-pipeline-execution --name "VuesticPipeline"
 
-# Redeploy
+# Deploy to production (via pipeline)
+git push origin deploy-to-aws-20260128_161953-sergeyka
+
+# Manual preview deployment
 ./scripts/deploy.sh
 ```
 
@@ -94,13 +98,23 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 
 ## Deployment Info
 
+### Pipeline
+- Pipeline name: VuesticPipeline
+- Pipeline ARN: arn:aws:codepipeline:us-east-1:126593893432:VuesticPipeline
+- Branch: deploy-to-aws-20260128_161953-sergeyka
+- Repository: PawRush/vuestic-admin
+- CodeConnection: arn:aws:codeconnections:us-east-1:126593893432:connection/c140aa0c-7407-42c9-aa4b-7c81f5faf40b
+- Pipeline URL: https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VuesticPipeline/view
+
+### Preview Environment
 - Deployment URL: https://d2ezmfw9ocabo2.cloudfront.net
 - Stack name: VuesticFrontend-preview-sergeyka
 - Distribution ID: E1R8J9QLOEQAQN
 - S3 bucket name: vuesticfrontend-preview-ser-cftos3s3bucketcae9f2be-yjeycjbjp57c
-- S3 logging bucket: vuesticfrontend-preview-s-cftos3s3loggingbucket64b-jirx4cw9e0g3
-- CloudFront logging bucket: vuesticfrontend-preview-s-cftos3cloudfrontloggingb-ujmlrrprn0xy
-- Deployment timestamp: 2026-01-28T16:38:18Z
+
+### Production Environment
+- Stack name: VuesticFrontend-prod (deployed via pipeline)
+- Managed by: VuesticPipeline
 
 ## Recovery Guide
 
