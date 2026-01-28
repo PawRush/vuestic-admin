@@ -1,20 +1,14 @@
 ---
-sop_name: deploy-frontend-app
+sop_name: setup-pipeline
 repo_name: vuestic-admin
 app_name: VuesticAdmin
-app_type: Frontend Application (Vue 3 + Vite SPA)
+app_type: CI/CD Pipeline
 branch: deploy-to-aws-20260128_174824-sergeyka
-framework: Vite (Vue 3)
-package_manager: yarn
-build_command: yarn run build
-output_directory: dist/
-base_path: /
-cloudfront_config: SPA (error responses to index.html)
-created: 2026-01-28T16:51:24Z
-last_updated: 2026-01-28T17:06:30Z
+created: 2026-01-28T17:10:00Z
+last_updated: 2026-01-28T17:10:00Z
 ---
 
-# Deployment Plan: VuesticAdmin
+# Deployment Plan: VuesticAdmin Pipeline
 
 Coding Agents should follow this Deployment Plan, and validate previous progress if picking up the Deployment in a new coding session.
 
@@ -22,49 +16,51 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 
 ## Phase 1: Gather Context and Configure
 
-- [x] Step 0: Inform User of Execution Flow
-- [x] Step 1: Create Deployment Plan
-- [x] Step 2: Create Deploy Branch
-- [x] Step 3: Detect Build Configuration
-- [x] Step 4: Validate Prerequisites
-- [x] Step 5: Revisit Deployment Plan
+- [ ] Step 0: Inform User of Execution Flow
+- [ ] Step 1: Create Deployment Plan
+- [ ] Step 2: Detect Existing Infrastructure
+  - [ ] 2.1: Detect stacks and frontend
+  - [ ] 2.2: Detect app name and git repository
+  - [ ] 2.3: Determine quality checks
+  - [ ] 2.4: User confirmation
+  - [ ] 2.5: Create CodeConnection (using existing)
 
-## Phase 2: Build CDK Infrastructure
+## Phase 2: Build and Deploy Pipeline
 
-- [x] Step 6: Initialize CDK Foundation
-- [x] Step 7: Generate CDK Stack
-- [x] Step 8: Create Deployment Script
-- [x] Step 9: Validate CDK Synth
+- [ ] Step 3: Create CDK Pipeline Stack
+- [ ] Step 4: CDK Bootstrap
+- [ ] Step 5: Deploy Pipeline
+  - [ ] 5.1: Push to remote
+  - [ ] 5.2: Authorize CodeConnection
+  - [ ] 5.3: Deploy pipeline stack
+  - [ ] 5.4: Trigger pipeline
+- [ ] Step 6: Monitor Pipeline
 
-## Phase 3: Deploy and Validate
+## Phase 3: Documentation
 
-- [x] Step 10: Execute CDK Deployment
-- [x] Step 11: Validate CloudFormation Stack
+- [ ] Step 7: Finalize Deployment Plan
+- [ ] Step 8: Update README.md
 
-## Phase 4: Update Documentation
+## Pipeline Info
 
-- [ ] Step 12: Finalize Deployment Plan
-- [ ] Step 13: Update README.md
-
-## Deployment Info
-
-- Deployment URL: https://d2syfjtj6a9exo.cloudfront.net
-- Stack name: VuesticFrontend-preview-sergeyka
-- Distribution ID: E3SJGIKG21WJGF
-- S3 Bucket Name: vuesticfrontend-preview-ser-cftos3s3bucketcae9f2be-wbl88sahjkwx
-- CloudFront Log Bucket: vuesticfrontend-preview-s-cftos3cloudfrontloggingb-xofimyrs438k
-- S3 Log Bucket: vuesticfrontend-preview-s-cftos3s3loggingbucket64b-vnmm7emjfnym
-- Deployment timestamp: 2026-01-28T17:05:41Z
+- Pipeline name: [after creation]
+- Pipeline ARN: [after creation]
+- Pipeline URL: [after creation]
+- CodeConnection ARN: arn:aws:codeconnections:us-east-1:126593893432:connection/c140aa0c-7407-42c9-aa4b-7c81f5faf40b
+- Repository: [after detection]
+- Branch: deploy-to-aws-20260128_174824-sergeyka
+- Quality checks: [after detection]
 
 ## Recovery Guide
 
 ```bash
 # Rollback
 cd infra
-cdk destroy "<StackName>"
+cdk destroy "<AppName>PipelineStack" --context codeConnectionArn=arn:aws:codeconnections:us-east-1:126593893432:connection/c140aa0c-7407-42c9-aa4b-7c81f5faf40b
 
-# Redeploy
-./scripts/deploy.sh
+# Redeploy pipeline
+cd infra
+npm run deploy:pipeline
 ```
 
 ## Issues Encountered
@@ -73,8 +69,8 @@ None.
 
 ## Session Log
 
-### Session 1 - 2026-01-28T16:51:24Z
+### Session 1 - 2026-01-28T17:10:00Z
 
 Agent: Claude Sonnet 4.5
-Progress: Completed Phase 1 & 2 - gathered context, built CDK infrastructure (FrontendStack with CloudFront + S3), validated CDK synth
-Next: Phase 3 - Execute CDK Deployment
+Progress: Created deployment plan
+Next: Detect existing infrastructure
