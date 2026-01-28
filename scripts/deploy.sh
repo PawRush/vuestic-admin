@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
 ENVIRONMENT="${1:-preview-$(whoami)}"
 
 if [[ "$ENVIRONMENT" != "prod" ]]; then
@@ -15,10 +19,11 @@ if ! aws sts get-caller-identity > /dev/null 2>&1; then
 fi
 
 echo "Building frontend..."
+cd "$PROJECT_ROOT"
 yarn run build
 
 echo "Installing CDK dependencies..."
-cd infra
+cd "$PROJECT_ROOT/infra"
 npm install
 npm run build
 
