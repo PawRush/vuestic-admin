@@ -45,6 +45,14 @@ Documentation, guides, examples and tutorials are available on [ui.vuestic.dev](
 
 Ask questions at the official community [discord server](https://discord.gg/jTKTjj2weV)
 
+### Deployment
+
+Deployed at: https://d2ezmfw9ocabo2.cloudfront.net, using the [deploy-frontend-app] Agent Standard Operation Procedure from the [AWS MCP](https://docs.aws.amazon.com/aws-mcp/latest/userguide/what-is-mcp-server.html).
+
+Deployment command: `./scripts/deploy.sh`
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for full details.
+
 ### Features
 
 - **Vue 3, Vite, Pinia, and Tailwind CSS -** Fast and efficient development
