@@ -1,12 +1,14 @@
 # Deployment Summary
 
-Your app is deployed to AWS! Preview URL: https://d2htmcenytgubx.cloudfront.net
+Your app is deployed to AWS with automated CI/CD!
 
-**Next Step: Automate Deployments**
+**Preview URL:** https://d2htmcenytgubx.cloudfront.net
 
-You're currently using manual deployment. To automate deployments from GitHub, ask your coding agent to set up AWS CodePipeline using an agent SOP for pipeline creation. Try: "create a pipeline using AWS SOPs"
+**Production Pipeline:** https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/VuesticAdminPipeline/view
 
-Services used: CloudFront, S3, CloudFormation, IAM
+Changes pushed to `deploy-to-aws-20260130_032535-sergeyka` branch will automatically deploy to production via CodePipeline.
+
+Services used: CloudFront, S3, CodePipeline, CodeBuild, CloudFormation, IAM
 
 Questions? Ask your Coding Agent:
  - What resources were deployed to AWS?
@@ -15,16 +17,22 @@ Questions? Ask your Coding Agent:
 ## Quick Commands
 
 ```bash
-# View deployment status
+# View pipeline status
+aws codepipeline get-pipeline-state --name "VuesticAdminPipeline" --query 'stageStates[*].[stageName,latestExecution.status]' --output table
+
+# View build logs
+aws logs tail "/aws/codebuild/PipelineBuildSynthCdkBuildP-ByUfQrCG5Gxo" --follow
+
+# Trigger pipeline manually
+aws codepipeline start-pipeline-execution --name "VuesticAdminPipeline"
+
+# View preview deployment status
 aws cloudformation describe-stacks --stack-name "VuesticFrontend-preview-sergeyka" --query 'Stacks[0].StackStatus' --output text
 
 # Invalidate CloudFront cache
 aws cloudfront create-invalidation --distribution-id "EPJ7XE6XU5J31" --paths "/*"
 
-# View CloudFront access logs (last hour)
-aws s3 ls "s3://vuesticfrontend-preview-s-cftos3cloudfrontloggingb-6sj00pla087y/" --recursive | tail -20
-
-# Redeploy
+# Manual redeploy (preview)
 ./scripts/deploy.sh
 ```
 
@@ -112,4 +120,16 @@ Progress: Deployed Vuestic Admin to AWS CloudFront
 - Created CDK infrastructure with TypeScript
 - Deployed to VuesticFrontend-preview-sergeyka stack
 - CloudFront URL: https://d2htmcenytgubx.cloudfront.net
+Status: Complete
+
+### Session 2 - 2026-01-30T03:47:00Z
+
+Agent: Claude Sonnet 4.5
+Progress: Set up automated CI/CD pipeline
+- Created CodePipeline with automated GitHub integration
+- Pipeline name: VuesticAdminPipeline
+- Source branch: deploy-to-aws-20260130_032535-sergeyka
+- Quality checks: lint, secretlint
+- Production stack: VuesticAdminFrontend-prod
+- Pipeline automatically deploys on push
 Status: Complete
