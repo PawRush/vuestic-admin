@@ -23,12 +23,12 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 - [x] Step 2.4: Get user confirmation
 - [x] Step 2.5: Verify CodeConnection (use existing ARN) - Status: AVAILABLE
 - [x] Step 2.6: Ensure production secrets (skipped - no Lambda functions)
-- [...] Phase 1 Checkpoint
+- [x] Phase 1 Checkpoint
 
 ## Phase 2: Build and Deploy Pipeline
-- [ ] Step 3: Create CDK Pipeline Stack
-- [ ] Step 4: CDK Bootstrap
-- [ ] Step 5.1: Push to remote
+- [x] Step 3: Create CDK Pipeline Stack
+- [x] Step 4: CDK Bootstrap
+- [...] Step 5.1: Push to remote
 - [ ] Step 5.2: Authorize CodeConnection
 - [ ] Step 5.3: Deploy pipeline stack
 - [ ] Step 5.4: Verify pipeline triggered
