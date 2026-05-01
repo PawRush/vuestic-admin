@@ -1,78 +1,74 @@
-# AWS Deployment Plan
+---
+sop_name: setup-pipeline
+repo_name: PawRush/vuestic-admin
+app_name: VuesticAdmin
+app_type: CI/CD Pipeline
+branch: deploy-to-aws-20260501_121659-kamielw
+created: 2026-05-01T12:30:00Z
+last_updated: 2026-05-01T12:40:00Z
+---
 
-**Date:** 2026-05-01
-**Branch:** deploy-to-aws-20260501_121659-kamielw
-**Account:** 189681391221
+# Deployment Plan: VuesticAdmin Pipeline
 
-## Phase 1: Prerequisites ✓
+Coding Agents should follow this Deployment Plan, and validate previous progress if picking up the Deployment in a new coding session.
 
-- ✓ AWS CLI installed (v1.42.6)
-- ✓ npm installed (v11.6.2)
-- ✓ AWS credentials configured (Account: 189681391221)
+**IMPORTANT**: Update this plan after EACH step completes. Mark the step `[x]` and update `last_updated` timestamp.
 
-## Phase 2: Codebase Analysis ✓
+## Phase 1: Gather Context and Configure
+- [x] Step 0: Inform User of Execution Flow
+- [x] Step 1: Create Deployment Plan
+- [x] Step 2.1: Detect stacks, frontend, and backend
+- [x] Step 2.2: Detect app name and git repository
+- [x] Step 2.3: Determine quality checks
+- [x] Step 2.4: Get user confirmation
+- [x] Step 2.5: Verify CodeConnection (use existing ARN) - Status: AVAILABLE
+- [x] Step 2.6: Ensure production secrets (skipped - no Lambda functions)
+- [...] Phase 1 Checkpoint
 
-- ✓ Scan project structure
-- ✓ Check for Supabase usage (None detected)
-- ✓ Determine application type
+## Phase 2: Build and Deploy Pipeline
+- [ ] Step 3: Create CDK Pipeline Stack
+- [ ] Step 4: CDK Bootstrap
+- [ ] Step 5.1: Push to remote
+- [ ] Step 5.2: Authorize CodeConnection
+- [ ] Step 5.3: Deploy pipeline stack
+- [ ] Step 5.4: Verify pipeline triggered
+- [ ] Step 6: Monitor Pipeline
+- [ ] Phase 2 Checkpoint
 
-**Application Type:** Static Frontend Application (Vue 3 + Vite)
+## Phase 3: Documentation
+- [ ] Step 7: Finalize Deployment Plan
+- [ ] Step 8: Update README.md
+- [ ] Completion Step
 
-**Evidence:**
-- Vue 3 + Vite + Pinia + Tailwind CSS stack
-- Build script (`vite build`) outputs to static directory
-- No backend dependencies (Express, Fastify, etc.)
-- No Supabase usage detected
-- No SSR configuration
-- Standard SPA with static build output
+## Deployment Info
 
-**Routing Decision:** Proceeding with `deploy-frontend-app` SOP
+- CodeConnection ARN: arn:aws:codeconnections:eu-central-1:189681391221:connection/ee7a600a-99ab-4b3a-bf6c-b42cc9f5a026
+- Pipeline Name: (after creation)
+- Pipeline URL: (after creation)
+- Stack Name: (after creation)
+- Region: eu-central-1
 
-## Phase 3: Deploy Frontend Application
+## Recovery Guide
 
-### Phase 3.1: Gather Context and Configure
-- [x] Step 0: Inform user of execution flow
-- [x] Step 1: Create deployment plan (already exists from routing phase, being updated)
-- [x] Step 2: Create deploy branch (`deploy-to-aws-20260501_121659-kamielw`)
-- [x] Step 3: Detect build configuration
-  - Framework: Vite + Vue 3 (SPA)
-  - Package manager: yarn
-  - Build command: `yarn run build:ci`
-  - Output directory: `dist/`
-  - Base path: `/` (root)
-  - CloudFront: SPA routing with error responses
-- [x] Step 4: Validate prerequisites
-  - ✓ AWS credentials configured (Account: 189681391221)
-  - ✓ yarn 4.9.2 installed and activated
-  - ✓ Build succeeds (dist/ created)
-  - ✓ CDK CLI v2.1031.0 installed
-  - ✓ Git working directory clean (except DEPLOYMENT_PLAN.md)
-- [x] Step 5: Revisit deployment plan
-  - App Name: VuesticAdmin
-  - CloudFront: SPA pattern (error responses → /index.html)
-  - No URL rewrite function needed
-  - Build: yarn run build:ci
-  - Output: dist/
+```bash
+# Rollback - Destroy Pipeline Stack
+cd infra && yarn run destroy:pipeline
 
-### Phase 3.2: Build CDK Infrastructure
-- [x] Step 6: Initialize CDK foundation
-- [x] Step 7: Generate CDK stack (SPA routing with error responses)
-- [x] Step 8: Create deployment script (scripts/deploy.sh)
-- [x] Step 9: Validate CDK synth (CloudFormation template generated successfully)
+# Manual Rollback
+aws codepipeline delete-pipeline --name "VuesticAdminPipeline"
+aws cloudformation delete-stack --stack-name "VuesticAdminPipelineStack"
 
-### Phase 3.3: Deploy and Validate
-- [x] Step 10: Execute CDK deployment
-  - Stack: VuesticFrontend-preview-kamielw
-  - Distribution: d3suqrvcwdh6ba.cloudfront.net
-  - Distribution ID: EDFGU32MHFY53
-  - URL: https://d3suqrvcwdh6ba.cloudfront.net
-  - Deployment time: ~5 minutes
-- [ ] Step 11: Validate CloudFormation stack
+# Redeploy
+cd infra && yarn run deploy:pipeline
+```
 
-### Phase 3.4: Update Documentation
-- [ ] Step 12: Finalize deployment plan
-- [ ] Step 13: Update README.md
+## Issues Encountered
 
-## Phase 4: Post-Deployment (Pending)
+None.
 
-To be populated after deployment completes.
+## Session Log
+
+### Session 1 - 2026-05-01T12:30:00Z
+Agent: Sonnet 4.5
+Progress: Created deployment plan, detecting infrastructure
+Next: Complete infrastructure detection and quality checks
