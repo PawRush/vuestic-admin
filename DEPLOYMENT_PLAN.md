@@ -12,7 +12,7 @@ entry_point: index.html
 base_path: /
 lint_command: yarn run lint
 created: 2026-05-06T15:02:00Z
-last_updated: 2026-05-06T15:11:00Z
+last_updated: 2026-05-06T15:22:00Z
 ---
 
 # Deployment Plan: Vuestic Admin
@@ -39,8 +39,8 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 
 ## Phase 3: Deploy and Validate
 
-- [ ] Step 10: Execute CDK Deployment
-- [ ] Step 11: Validate CloudFormation Stack
+- [x] Step 10: Execute CDK Deployment
+- [x] Step 11: Validate CloudFormation Stack
 
 ## Phase 4: Update Documentation
 
@@ -49,12 +49,16 @@ Coding Agents should follow this Deployment Plan, and validate previous progress
 
 ## Deployment Info
 
-- Deployment URL: (will be set after deployment)
-- Stack name: (will be set after creation)
-- Distribution ID: (will be set after deployment)
-- S3 Bucket Name: (will be set after deployment)
-- CloudFront Log Bucket: (will be set after deployment)
-- S3 Log Bucket: (will be set after deployment)
+- Deployment URL: https://d2k9hby01ssrq.cloudfront.net
+- Stack name: VuesticFront-preview-kamielw
+- AWS Region: eu-central-1
+- Distribution ID: E222PJBJA4HNJ5
+- Distribution Domain: d2k9hby01ssrq.cloudfront.net
+- S3 Bucket Name: vuesticfront-preview-kamiel-cftos3s3bucketcae9f2be-mfplofcw1inj
+- CloudFront Log Bucket: vuesticfront-preview-kami-cftos3cloudfrontloggingb-v1u1lfjnf4hy
+- S3 Log Bucket: vuesticfront-preview-kami-cftos3s3loggingbucket64b-ub35tldzkm0x
+- Deployment Timestamp: 2026-05-06T15:21:27Z
+- Stack Status: CREATE_COMPLETE
 
 ## Recovery Guide
 
